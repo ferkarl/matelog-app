@@ -1,0 +1,1 @@
+web: gunicorn Matelog_app.wsgi
