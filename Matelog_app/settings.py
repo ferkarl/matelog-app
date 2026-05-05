@@ -26,9 +26,9 @@ import os
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.environ.get( "ALLOWED_HOSTS","matelog-app.onrender.com").split(",")
 
 
 
@@ -91,8 +91,8 @@ import dj_database_url
 import os
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
+    "default": dj_database_url.parse(
+        os.environ.get("DATABASE_URL"),
         conn_max_age=600,
     )
 }
