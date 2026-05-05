@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 
 def home(request):
-    return JsonResponse({
-        "status": "ok",
-        "message": "API funcionando 🚀"
-    })
+    if request.method in ['GET', 'HEAD']:
+        return JsonResponse({
+            "status": "ok",
+            "message": "API funcionando 🚀"
+        })
