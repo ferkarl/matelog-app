@@ -20,15 +20,14 @@ class Habilidad(models.Model):
 # ------------------------------
 # Dominio Habilidad
 # ------------------------------
-from django.contrib.auth.models import User
-
 class DominioHabilidad(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, db_column='id_usuario')
-    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE)
+    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE, db_column='id_habilidad')
     nivel_dominio = models.DecimalField(max_digits=5, decimal_places=2)
 
     class Meta:
         db_table = 'dominio_habilidad'
+        managed = False  
 
 # ------------------------------
 # Lección
