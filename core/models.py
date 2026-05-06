@@ -27,7 +27,8 @@ class DominioHabilidad(models.Model):
 
     class Meta:
         db_table = 'dominio_habilidad'
-        managed = False  
+        managed = False
+        default_permissions = ()
 
 # ------------------------------
 # Lección
@@ -108,13 +109,13 @@ class Ejercicios(models.Model):
 # EjercicioHabilidad
 # ------------------------------
 class EjercicioHabilidad(models.Model):
-    id_ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE)
-    id_habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE)
+    id_ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE, db_column='id_ejercicio')
+    id_habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE, db_column='id_habilidad')
 
     class Meta:
         db_table = 'ejercicio_habilidad'
+        managed = False
         unique_together = ('id_ejercicio', 'id_habilidad')
-
 
 # ------------------------------
 # Intento
