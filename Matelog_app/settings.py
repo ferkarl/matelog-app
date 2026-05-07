@@ -28,7 +28,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get( "ALLOWED_HOSTS","matelog-app.onrender.com").split(",")
+ALLOWED_HOSTS = [
+    "matelog-app.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 
