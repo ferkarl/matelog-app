@@ -30,8 +30,8 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = [
     "matelog-app.onrender.com",
-    "localhost",
     "127.0.0.1",
+    "localhost",
 ]
 
 
