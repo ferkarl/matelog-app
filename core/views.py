@@ -98,13 +98,20 @@ class EjerciciosViewSet(viewsets.ModelViewSet):
 # =========================
 # LOGIN
 # =========================
+
 @api_view(['POST'])
 def login_view(request):
+
+    print("BODY:", request.body)
+    print("DATA:", request.data)
+
     username = request.data.get('username')
     password = request.data.get('password')
 
     if not username or not password:
-        return Response({'error': 'Faltan datos'}, status=400)
+        return Response({
+            'error': 'Faltan datos'
+        }, status=400)
 
     user = authenticate(username=username, password=password)
 
@@ -117,8 +124,9 @@ def login_view(request):
             'user_id': user.id
         })
 
-    return Response({'error': 'Credenciales inválidas'}, status=401)
-
+    return Response({
+        'error': 'Credenciales inválidas'
+    }, status=401)
 
 # =========================
 # REGISTER
