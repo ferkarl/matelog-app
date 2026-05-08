@@ -21,8 +21,14 @@ from django.urls import path, include
 def home(request):
     return HttpResponse("Matelog API funcionando 🚀")
 
+from django.http import HttpResponse
+
+def test(request):
+    return HttpResponse("OK")
+
 urlpatterns = [
     path('', home),
+    path('test/', test),
     path('admin/', admin.site.urls),
     path('api/', include('core.urls')),
 ]
