@@ -98,7 +98,17 @@ class EjerciciosViewSet(viewsets.ModelViewSet):
 # =========================
 # LOGIN
 # =========================
+@api_view(['POST'])
+def login_view(request):
 
+    print("ENTRO AL LOGIN VIEW")
+
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    print(username)
+    print(password)
+    
 @api_view(['POST'])
 def login_view(request):
 
