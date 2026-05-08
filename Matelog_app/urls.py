@@ -18,13 +18,13 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import path, include
 
-def home(request):
-    return HttpResponse("Matelog API funcionando 🚀")
-
 from django.http import HttpResponse
 
 def test(request):
-    return HttpResponse("OK")
+    return HttpResponse("OK TEST")
+
+def home(request):
+    return HttpResponse("Matelog API funcionando 🚀")
 
 urlpatterns = [
     path('', home),
