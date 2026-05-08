@@ -28,17 +28,15 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = [
-    "matelog-app.onrender.com",
-    "127.0.0.1",
-    "localhost",
-]
+ALLOWED_HOSTS = ['*']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CSRF_TRUSTED_ORIGINS = [
     "https://matelog-app.onrender.com",
 ]
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 # Application definition
 
