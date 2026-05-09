@@ -21,8 +21,16 @@ class Habilidad(models.Model):
 # DOMINIO HABILIDAD
 # ==============================
 class DominioHabilidad(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        db_column='usuario_id'
+    )
+    habilidad = models.ForeignKey(
+        Habilidad,
+        on_delete=models.CASCADE,
+        db_column='id_habilidad'
+    )
     nivel_dominio = models.DecimalField(max_digits=5, decimal_places=2)
 
     class Meta:
@@ -58,7 +66,8 @@ class Explicacion(models.Model):
     leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
-        related_name='explicaciones'
+        related_name='explicaciones',
+        db_column='id_leccion'
     )
 
     contenido = models.TextField()
@@ -86,21 +95,20 @@ class Ejercicios(models.Model):
     datos = models.JSONField(default=dict)
     orden = models.IntegerField(default=0)
 
-    # 🔹 relación con lección (opcional pero útil para consultas rápidas)
     leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
-        related_name='ejercicios'
+        related_name='ejercicios',
+        db_column='id_leccion'
     )
 
-    # 🔹 relación correcta: ejercicio depende de explicación
     explicacion = models.ForeignKey(
         Explicacion,
         on_delete=models.CASCADE,
-        related_name='ejercicios'
+        related_name='ejercicios',
+        db_column='id_explicacion'
     )
 
-    # 🔹 habilidades
     habilidades = models.ManyToManyField(
         Habilidad,
         through='EjercicioHabilidad'
@@ -114,11 +122,19 @@ class Ejercicios(models.Model):
 
 
 # ==============================
-# TABLA INTERMEDIA (M2M)
+# TABLA INTERMEDIA
 # ==============================
 class EjercicioHabilidad(models.Model):
-    ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE)
-    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE)
+    ejercicio = models.ForeignKey(
+        Ejercicios,
+        on_delete=models.CASCADE,
+        db_column='id_ejercicio'
+    )
+    habilidad = models.ForeignKey(
+        Habilidad,
+        on_delete=models.CASCADE,
+        db_column='id_habilidad'
+    )
 
     class Meta:
         db_table = 'ejercicio_habilidad'
@@ -132,8 +148,16 @@ class EjercicioHabilidad(models.Model):
 # INTENTOS
 # ==============================
 class Intento(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        db_column='usuario_id'
+    )
+    ejercicio = models.ForeignKey(
+        Ejercicios,
+        on_delete=models.CASCADE,
+        db_column='id_ejercicio'
+    )
 
     es_correcto = models.BooleanField()
     tiempo_respuesta = models.IntegerField(default=0)
@@ -153,8 +177,16 @@ class Intento(models.Model):
 class Progreso(models.Model):
     id_progreso = models.AutoField(primary_key=True)
 
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    leccion = models.ForeignKey(Leccion, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        db_column='usuario_id'
+    )
+    leccion = models.ForeignKey(
+        Leccion,
+        on_delete=models.CASCADE,
+        db_column='id_leccion'
+    )
 
     porcentaje_completado = models.DecimalField(max_digits=5, decimal_places=2)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
