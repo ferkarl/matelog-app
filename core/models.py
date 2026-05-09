@@ -86,18 +86,21 @@ class Ejercicios(models.Model):
     datos = models.JSONField(default=dict)
     orden = models.IntegerField(default=0)
 
+    # 🔹 relación con lección (opcional pero útil para consultas rápidas)
     leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
         related_name='ejercicios'
     )
 
+    # 🔹 relación correcta: ejercicio depende de explicación
     explicacion = models.ForeignKey(
         Explicacion,
         on_delete=models.CASCADE,
         related_name='ejercicios'
     )
 
+    # 🔹 habilidades
     habilidades = models.ManyToManyField(
         Habilidad,
         through='EjercicioHabilidad'
@@ -111,19 +114,11 @@ class Ejercicios(models.Model):
 
 
 # ==============================
-# TABLA INTERMEDIA (🔥 FIX AQUÍ)
+# TABLA INTERMEDIA (M2M)
 # ==============================
 class EjercicioHabilidad(models.Model):
-    ejercicio = models.ForeignKey(
-        Ejercicios,
-        on_delete=models.CASCADE,
-        db_column='id_ejercicio_id'   # 👈 IMPORTANTE
-    )
-    habilidad = models.ForeignKey(
-        Habilidad,
-        on_delete=models.CASCADE,
-        db_column='id_habilidad_id'   # 👈 IMPORTANTE
-    )
+    ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE)
+    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'ejercicio_habilidad'
