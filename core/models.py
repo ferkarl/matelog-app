@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# ------------------------------
-# Habilidad
-# ------------------------------
+# ==============================
+# HABILIDAD
+# ==============================
 class Habilidad(models.Model):
     id_habilidad = models.AutoField(primary_key=True)
     nombre_habilidad = models.CharField(max_length=100)
@@ -17,22 +17,25 @@ class Habilidad(models.Model):
         return self.nombre_habilidad
 
 
-# ------------------------------
-# Dominio Habilidad
-# ------------------------------
+# ==============================
+# DOMINIO HABILIDAD
+# ==============================
 class DominioHabilidad(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, db_column='id_usuario')
-    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE, db_column='id_habilidad')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE)
     nivel_dominio = models.DecimalField(max_digits=5, decimal_places=2)
 
     class Meta:
         db_table = 'dominio_habilidad'
-        managed = False
-        default_permissions = ()
+        unique_together = ('usuario', 'habilidad')
 
-# ------------------------------
-# Lección
-# ------------------------------
+    def __str__(self):
+        return f"{self.usuario} - {self.habilidad}"
+
+
+# ==============================
+# LECCIÓN
+# ==============================
 class Leccion(models.Model):
     id_leccion = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=150)
@@ -46,16 +49,18 @@ class Leccion(models.Model):
         return self.titulo
 
 
-# ------------------------------
-# Explicación
-# ------------------------------
+# ==============================
+# EXPLICACIÓN
+# ==============================
 class Explicacion(models.Model):
     id_explicacion = models.AutoField(primary_key=True)
+
     leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
-        db_column='id_leccion'
+        related_name='explicaciones'
     )
+
     contenido = models.TextField()
     orden = models.IntegerField()
     tipo = models.CharField(max_length=50, null=True, blank=True)
@@ -68,11 +73,12 @@ class Explicacion(models.Model):
         return f"Explicación {self.id_explicacion}"
 
 
-# ------------------------------
-# Ejercicios
-# ------------------------------
+# ==============================
+# EJERCICIOS
+# ==============================
 class Ejercicios(models.Model):
     id_ejercicio = models.AutoField(primary_key=True)
+
     pregunta = models.TextField()
     respuesta_correcta = models.TextField()
     tipo = models.CharField(max_length=50)
@@ -80,17 +86,16 @@ class Ejercicios(models.Model):
     datos = models.JSONField(default=dict)
     orden = models.IntegerField(default=0)
 
-    id_leccion = models.ForeignKey(
+    leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
-        db_column='id_leccion'
+        related_name='ejercicios'
     )
 
     explicacion = models.ForeignKey(
         Explicacion,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
+        on_delete=models.CASCADE,
+        related_name='ejercicios'
     )
 
     habilidades = models.ManyToManyField(
@@ -105,24 +110,36 @@ class Ejercicios(models.Model):
         return f"Ejercicio {self.id_ejercicio}"
 
 
-# ------------------------------
-# EjercicioHabilidad
-# ------------------------------
+# ==============================
+# TABLA INTERMEDIA (🔥 FIX AQUÍ)
+# ==============================
 class EjercicioHabilidad(models.Model):
-    id_ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE, db_column='id_ejercicio')
-    id_habilidad = models.ForeignKey(Habilidad, on_delete=models.CASCADE, db_column='id_habilidad')
+    ejercicio = models.ForeignKey(
+        Ejercicios,
+        on_delete=models.CASCADE,
+        db_column='id_ejercicio_id'   # 👈 IMPORTANTE
+    )
+    habilidad = models.ForeignKey(
+        Habilidad,
+        on_delete=models.CASCADE,
+        db_column='id_habilidad_id'   # 👈 IMPORTANTE
+    )
 
     class Meta:
         db_table = 'ejercicio_habilidad'
-        managed = False
-        unique_together = ('id_ejercicio', 'id_habilidad')
+        unique_together = ('ejercicio', 'habilidad')
 
-# ------------------------------
-# Intento
-# ------------------------------
+    def __str__(self):
+        return f"{self.ejercicio} - {self.habilidad}"
+
+
+# ==============================
+# INTENTOS
+# ==============================
 class Intento(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicios, on_delete=models.CASCADE)
+
     es_correcto = models.BooleanField()
     tiempo_respuesta = models.IntegerField(default=0)
     numero_intento = models.IntegerField(default=1)
@@ -135,23 +152,21 @@ class Intento(models.Model):
         return f"{self.usuario} - {self.ejercicio}"
 
 
-# ------------------------------
-# Progreso
-# ------------------------------
+# ==============================
+# PROGRESO
+# ==============================
 class Progreso(models.Model):
     id_progreso = models.AutoField(primary_key=True)
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-
     leccion = models.ForeignKey(Leccion, on_delete=models.CASCADE)
 
-    porcentaje_completado = models.DecimalField(
-        max_digits=5,
-        decimal_places=2
-    )
-
+    porcentaje_completado = models.DecimalField(max_digits=5, decimal_places=2)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'progreso'
         unique_together = ('usuario', 'leccion')
+
+    def __str__(self):
+        return f"{self.usuario} - {self.leccion}"
