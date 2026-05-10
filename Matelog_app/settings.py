@@ -20,12 +20,9 @@ load_dotenv(BASE_DIR / ".env")
 # =========================
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
-
-# TEMPORAL PARA DEBUG EN RENDER
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "10.0.2.2"]
 USE_X_FORWARDED_HOST = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -127,19 +124,39 @@ WSGI_APPLICATION = 'Matelog_app.wsgi.application'
 # DATABASE
 # =========================
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+#DATABASES = {
+    #"default": dj_database_url.config(
+      #  default=os.getenv("DATABASE_URL"),
+       # conn_max_age=600,
+       # ssl_require=True
+    #)
+#}
 
-DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
+#DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
 
 # =========================
 # PASSWORD VALIDATION
 # =========================
+
+# Database
+# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
+import os
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "matelog_app",
+        "USER": "postgres",
+        "PASSWORD": "2421ramm",
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
+}
+
+# Password validation
+# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
