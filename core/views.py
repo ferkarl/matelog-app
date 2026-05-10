@@ -29,7 +29,7 @@ def home_stats(request):
     correctos = Intento.objects.filter(
         usuario=user,
         es_correcto=True
-    ).values('ejercicio').distinct().count()
+    ).values('ejercicio_id').distinct().count()
 
     fallos = Intento.objects.filter(
         usuario=user,
