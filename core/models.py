@@ -21,16 +21,20 @@ class Habilidad(models.Model):
 # DOMINIO HABILIDAD
 # ==============================
 class DominioHabilidad(models.Model):
+    id_dominio = models.AutoField(primary_key=True)
+
     usuario = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        db_column='usuario_id'
+        db_column='id_usuario'
     )
+
     habilidad = models.ForeignKey(
         Habilidad,
         on_delete=models.CASCADE,
         db_column='id_habilidad'
     )
+
     nivel_dominio = models.DecimalField(max_digits=5, decimal_places=2)
 
     class Meta:
@@ -103,11 +107,11 @@ class Ejercicios(models.Model):
     )
 
     explicacion = models.ForeignKey(
-        Explicacion,
-        on_delete=models.CASCADE,
-        related_name='ejercicios',
-        db_column='id_explicacion'
-    )
+    Explicacion,
+    on_delete=models.CASCADE,
+    related_name='ejercicios',
+    db_column='explicacion_id'
+)
 
     habilidades = models.ManyToManyField(
         Habilidad,
@@ -125,23 +129,23 @@ class Ejercicios(models.Model):
 # TABLA INTERMEDIA
 # ==============================
 class EjercicioHabilidad(models.Model):
+    id = models.AutoField(primary_key=True)
+
     ejercicio = models.ForeignKey(
         Ejercicios,
         on_delete=models.CASCADE,
-        db_column='id_ejercicio'
+        db_column='id_ejercicio_id'
     )
+
     habilidad = models.ForeignKey(
         Habilidad,
         on_delete=models.CASCADE,
-        db_column='id_habilidad'
+        db_column='id_habilidad_id'
     )
 
     class Meta:
         db_table = 'ejercicio_habilidad'
         unique_together = ('ejercicio', 'habilidad')
-
-    def __str__(self):
-        return f"{self.ejercicio} - {self.habilidad}"
 
 
 # ==============================
@@ -153,10 +157,11 @@ class Intento(models.Model):
         on_delete=models.CASCADE,
         db_column='usuario_id'
     )
+
     ejercicio = models.ForeignKey(
         Ejercicios,
         on_delete=models.CASCADE,
-        db_column='id_ejercicio'
+        db_column='ejercicio_id'
     )
 
     es_correcto = models.BooleanField()
@@ -182,10 +187,11 @@ class Progreso(models.Model):
         on_delete=models.CASCADE,
         db_column='usuario_id'
     )
+
     leccion = models.ForeignKey(
         Leccion,
         on_delete=models.CASCADE,
-        db_column='id_leccion'
+        db_column='leccion_id'
     )
 
     porcentaje_completado = models.DecimalField(max_digits=5, decimal_places=2)
