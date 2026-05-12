@@ -5,7 +5,10 @@ Django settings for Matelog_app project.
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+
+load_dotenv()
 import dj_database_url
+print("DATABASE_URL =", os.getenv("DATABASE_URL"))
 
 # =========================
 # BASE DIR
