@@ -90,7 +90,7 @@ class EjerciciosViewSet(viewsets.ModelViewSet):
         leccion_id = self.request.query_params.get('leccion')
 
         if leccion_id:
-            queryset = queryset.filter(id_leccion=leccion_id)
+            queryset = queryset.filter(leccion_id=leccion_id)
 
         return queryset
 
