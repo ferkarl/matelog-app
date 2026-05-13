@@ -33,8 +33,20 @@ class HabilidadSerializer(serializers.ModelSerializer):
 
 #ejercicios 
 class EjerciciosSerializer(serializers.ModelSerializer):
-    habilidades = HabilidadSerializer(many=True, read_only=True)
+
+    id_leccion = serializers.IntegerField(source='leccion.id_leccion')
+    explicacion_id = serializers.IntegerField(source='explicacion.id_explicacion', required=False)
 
     class Meta:
         model = Ejercicios
-        fields = '__all__'
+        fields = [
+            'id_ejercicio',
+            'pregunta',
+            'respuesta_correcta',
+            'tipo',
+            'tipo_ejercicio',
+            'datos',
+            'orden',
+            'id_leccion',
+            'explicacion_id'
+        ]
