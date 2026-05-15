@@ -133,24 +133,31 @@ def login_view(request):
 # =========================
 @api_view(['POST'])
 def register_view(request):
-    username = request.data.get('username')
-    email = request.data.get('email')
-    password = request.data.get('password')
+    try:
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
 
-    if not username or not password:
-        return Response({'error': 'Faltan datos'}, status=400)
+        if not username or not password:
+            return Response({'error': 'Faltan datos'}, status=400)
 
-    if User.objects.filter(username=username).exists():
-        return Response({'error': 'Usuario ya existe'}, status=400)
+        if User.objects.filter(username=username).exists():
+            return Response({'error': 'Usuario ya existe'}, status=400)
 
-    user = User.objects.create_user(
-        username=username,
-        email=email,
-        password=password
-    )
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
 
-    return Response({'success': True}, status=201)
+        return Response({'success': True}, status=201)
 
+    except Exception as e:
+        print("ERROR REGISTER:", str(e))
+        return Response({
+            "error": "Error interno",
+            "detail": str(e)
+        }, status=500)
 
 # =========================
 # GUARDAR INTENTO
