@@ -24,7 +24,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
 
 #DEBUG = os.environ.get("DEBUG", "False") == "True"
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
