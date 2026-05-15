@@ -22,16 +22,10 @@ load_dotenv(BASE_DIR / ".env")
 # =========================
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-key")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+CORS_ALLOWED_ORIGINS = [ "https://matelog-app.onrender.com",]
 
-#DEBUG = os.environ.get("DEBUG", "False") == "True"
-DEBUG = False
-
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "10.0.2.2",
-    ".onrender.com"
-]
+ALLOWED_HOSTS = ["*"]
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -72,6 +66,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.permissions.AllowAny',
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser',
