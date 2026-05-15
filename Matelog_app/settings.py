@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'corsheaders',
     # apps
     'api',
     'core',
@@ -83,6 +83,7 @@ REST_FRAMEWORK = {
 # =========================
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
 
     # WhiteNoise (IMPORTANTE para Render)
