@@ -29,16 +29,17 @@ ejercicios_data = [
         }
     },
     {
-        "pregunta": "Llueve ___ hace frío",
-        "respuesta_correcta": "y",
-        "tipo": "completar",
-        "tipo_ejercicio": "normal",
-        "datos": {
-            "estructura": ["___", "y", "___"],
-            "opciones": ["y", "no"],
-            "correctas": ["y"]
-        }
-    },
+    "pregunta": "Llueve ___ hace frío",
+    "tipo": "completar",
+    "tipo_ejercicio": "normal",
+    "datos": {
+        "estructura": ["Llueve", "___", "hace frío"],
+        "opciones": ["y", "o"],
+        "respuestas_validas": [
+            "Llueve y hace frío"
+        ]
+    }
+},
     {
         "pregunta": "Los planetas giran alrededor del sol",
         "respuesta_correcta": "Verdadera",
