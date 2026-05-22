@@ -1,5 +1,5 @@
 # core/utils/ejercicios.py
-
+# PRUEBA CAMBIO GITHUB
 ejercicios_data = [
     {
         "pregunta": "El cielo es azul",
